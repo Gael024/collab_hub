@@ -1,0 +1,144 @@
+<x-guest-layout>
+    <form method="POST" action="{{ route('register') }}">
+        @csrf
+
+        <!-- Name -->
+        <div>
+            <x-input-label for="name" :value="__('Name')" />
+            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        </div>
+
+        <!-- Email Address -->
+        <div class="mt-4">
+            <x-input-label for="email" :value="__('Email')" />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        </div>
+
+        <!-- Password -->
+        <div class="mt-4">
+            <x-input-label for="password" :value="__('Password')" />
+
+            <x-text-input id="password" class="block mt-1 w-full"
+                            type="password"
+                            name="password"
+                            required autocomplete="new-password" />
+
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="mt-4">
+            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+
+            <x-text-input id="password_confirmation" class="block mt-1 w-full"
+                            type="password"
+                            name="password_confirmation" required autocomplete="new-password" />
+
+            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+        </div>
+        
+        <!-- Campo extra para apellido-->
+        <div class="mt-4">
+            <x-input-label for="apellido" value="Apellidos" />
+            <x-text-input id="apellido" class="block mt-1 w-full" type="text" name="apellido" :value="old('apellido')" required autocomplete="apellido" />
+            <x-input-error :messages="$errors->get('apellido')" class="mt-2" />
+        </div>
+        <!-- Campo extra para edad-->
+        <div class="mt-4">
+            <x-input-label for="edad" value="Edad" />
+            <x-text-input id="edad" class="block mt-1 w-full" type="number" name="edad" :value="old('edad')" required autocomplete="edad" />
+            <x-input-error :messages="$errors->get('edad')" class="mt-2" />
+        </div>
+        <!-- Campo extra para celular-->
+        <div class="mt-4">
+            <x-input-label for="celular" value="Número telefonico" />
+            <x-text-input id="celular" class="block mt-1 w-full" type="tel" name="celular" :value="old('celular')" required autocomplete="celular" />
+            <x-input-error :messages="$errors->get('celular')" class="mt-2" />
+        </div>
+        <!-- Campo extra para tipo de usuario (estudiante/profesor/profesional)-->
+        <div class="mt-4">
+            <x-input-label for="tipo" value="Rol" />
+            <select id="tipo" name="tipo" class="block mt-1 w-full">
+                <option value="">Selecciona el rol que desempeñas</option>
+                <option value="estudiante" {{ old('tipo') == 'estudiante' ? 'selected' : '' }}>Estudiante</option>
+                <option value="profesor" {{ old('tipo') == 'profesor' ? 'selected' : '' }}>Profesor</option>
+                <option value="profesional" {{ old('tipo') == 'profesional' ? 'selected' : '' }}>Profesional</option>
+            </select>
+            <x-input-error :messages="$errors->get('tipo')" class="mt-2" />
+        </div>
+        <!-- Campo extra para el sector al que pertenece el usuario (Educación/Tecnologia/Negocios/Salud)-->
+        <div class="mt-4">
+            <x-input-label for="sector" value="Sector" />
+            <select id="sector" name="sector" class="block mt-1 w-full">
+                <option value="">Selecciona el sector al que pertenece</option>
+                <option value="educacion" {{ old('sector') == 'educacion' ? 'selected' : '' }}>Educación</option>
+                <option value="tecnologia" {{ old('sector') == 'tecnologia' ? 'selected' : '' }}>Tecnología</option>
+                <option value="negocios" {{ old('sector') == 'negocios' ? 'selected' : '' }}>Negocios</option>
+                <option value="salud" {{ old('sector') == 'salud' ? 'selected' : '' }}>Salud</option>
+            </select>
+            <x-input-error :messages="$errors->get('sector')" class="mt-2" />
+        </div>
+        <!-- Campo extra para la procedencia del usuario (Institución/Empresa)-->
+        <div class="mt-4">
+            <x-input-label for="procedencia" value="Indique la institución o empresa a la que pertenece" />
+            <x-text-input id="procedencia" class="block mt-1 w-full" type="text" name="procedencia" :value="old('procedencia')" required autocomplete="procedencia" />
+            <x-input-error :messages="$errors->get('procedencia')" class="mt-2" />
+        </div>
+        <!-- Campo extra para el pais-->
+        <div class="mt-4">
+            <x-input-label for="pais" value="País" />
+            <select id="pais" name="pais" class="block mt-1 w-full">
+                <option value="">Seleccione su país</option>
+                <option value="mexico" {{ old('pais') == 'mexico' ? 'selected' : '' }}>México</option>
+                <option value="usa" {{ old('pais') == 'usa' ? 'selected' : '' }}>Estados Unidos</option>
+                <option value="espania" {{ old('pais') == 'espania' ? 'selected' : '' }}>España</option>
+                <option value="canada" {{ old('pais') == 'canada' ? 'selected' : '' }}>Canadá</option>
+                <option value="brazil" {{ old('pais') == 'brazil' ? 'selected' : '' }}>Brazil</option>
+                <option value="china" {{ old('pais') == 'china' ? 'selected' : '' }}>China</option>
+            </select>
+            <x-input-error :messages="$errors->get('pais')" class="mt-2" />
+        </div>
+        <!-- Campo extra para el estado-->
+        <div class="mt-4">
+            <x-input-label for="estado" value="Estado en el que reside" />
+            <x-text-input id="estado" class="block mt-1 w-full" type="text" name="estado" :value="old('estado')" required autocomplete="estado" />
+            <x-input-error :messages="$errors->get('estado')" class="mt-2" />
+        </div>
+        <!-- Campo extra para el medio por el cual se obtuvieron referencias del software-->
+        <div class="mt-4">
+            <x-input-label for="referencia" value="¿Cómo nos conociste?" />
+            <select id="referencia" name="referencia" class="block mt-1 w-full">
+                <option value="">Selecciona la opción que mejor lo describa</option>
+                <option value="redes" {{ old('referencia') == 'redes' ? 'selected' : '' }}>Los conocí por redes sociales</option>
+                <option value="amigos" {{ old('referencia') == 'amigos' ? 'selected' : '' }}>Un amigo me habló de la aplicación</option>
+                <option value="anuncio" {{ old('referencia') == 'anuncio' ? 'selected' : '' }}>Ví un anuncio de ustedes</option>
+                <option value="empresa" {{ old('referencia') == 'empresa' ? 'selected' : '' }}>Mi empresa usa el software</option>
+            </select>
+            <x-input-error :messages="$errors->get('referencia')" class="mt-2" />
+        </div>
+        <!-- Campo extra para la caracteristica principal de interes-->
+        <div class="mt-4">
+            <x-input-label for="carac_principal" value="¿Qúe carcateristica te interesa más?" />
+            <select id="carac_principal" name="carac_principal" class="block mt-1 w-full">
+                <option value="">Selecciona la opción que mejor lo describa</option>
+                <option value="presencia" {{ old('carac_principal') == 'presencia' ? 'selected' : '' }}>Gestor de presencia</option>
+                <option value="chat" {{ old('carac_principal') == 'mensajeria' ? 'selected' : '' }}>Chat en tiempo real</option>
+                <option value="editor" {{ old('carac_principal') == 'editor' ? 'selected' : '' }}>Editor compartido</option>
+            </select>
+            <x-input-error :messages="$errors->get('carac_principal')" class="mt-2" />
+        </div>
+
+
+        <div class="flex items-center justify-end mt-4">
+            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
+                {{ __('Already registered?') }}
+            </a>
+
+            <x-primary-button class="ms-4">
+                {{ __('Register') }}
+            </x-primary-button>
+        </div>
+    </form>
+</x-guest-layout>
