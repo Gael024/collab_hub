@@ -45,6 +45,12 @@ class AdministradorController extends Controller
         }
 
         $users = $query->paginate(30)->withQueryString();
+        //$users = $query->paginate(30)->appends($request->query());
+
+        //Comunicación asincrona 
+        if($request->ajax()){
+            return view('collab.administrador.parcial.panel', compact('users'))->render();
+        }
 
 
         return view('collab.administrador.usuarios', compact('users',));

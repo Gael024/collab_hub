@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Usuarios</title>
+    
 </head>
 <body>
     <h2>Usuarios en el sistema</h2>
@@ -52,51 +53,49 @@
             <option value="editor" {{ request('carac_principal') == 'editor' ? 'selected' : '' }}>Editor</option>
         </select>
 
-        <button type="submit">Filtrar<button>
+        
         <button><a href="{{ url()->current() }}">Limpiar</a></button>
     </form>
 
-
-    <table>
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Edad</th>
-                <th>Tipo</th>
-                <th>Sector</th>
-                <th>Procedencia</th>
-                <th>País</th>
-                <th>Estado</th>
-                <th>Referencia</th>
-                <th>Interes</th>
-                <th>Correo</th>
-                <th>Celular</th>
-                <th>Fecha de registro</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($users as $user)
-            <tr>
-                <td>{{ $user->name }}</td>
-                <td>{{ $user->apellido}}</td>
-                <td>{{ $user->edad }}</td>
-                <td>{{ $user->tipo }}</td>
-                <td>{{ $user->sector}}</td>
-                <td>{{ $user->procedencia }}</td>
-                <td>{{ $user->pais}}</td>
-                <td>{{ $user->estado}}</td>
-                <td>{{ $user->referencia}}</td>
-                <td>{{ $user->carac_principal}}</td>
-                <td>{{ $user->email }}</td>
-                <td>{{ $user->celular}}</td>
-                <td>{{ $user->created_at}}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-    {{ $users->links() }}
+    
+    <div id="tabla_usuarios">
+        @include('collab.administrador.parcial.panel')
+    </div>
 
     <a href="/">Volver</a>
+
+    
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    const tabla = document.getElementById('tabla_usuarios');
+
+    function cargarUsuarios(){
+        const formData = new FormData(form);
+        const params = new URLSearchParams(formData).toString();
+        const url = window.location.pathname + '?' + params;
+        fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(res => res.text())
+        .then(html => {
+            tabla.innerHTML = html;
+            window.history.replaceState(null, '', url);
+        });
+    }
+
+    form.search.addEventListener('keyup', function(){
+        cargarUsuarios();
+    });
+
+    form.tipo.addEventListener('change', cargarUsuarios);
+    form.sector.addEventListener('change', cargarUsuarios);
+    form.pais.addEventListener('change', cargarUsuarios);
+    form.referencia.addEventListener('change', cargarUsuarios);
+    form.carac_principal.addEventListener('change', cargarUsuarios);
+})
+</script>    
 </body>
 </html>
