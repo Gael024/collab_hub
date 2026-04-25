@@ -8,23 +8,43 @@ use Illuminate\Support\Facades\DB;
 
 class AdministradorController extends Controller
 {
-    public function index(){
-        $users = User::select(
-        'id', 
-        'name', 
-        'email', 
-        'rol', 
-        'created_at', 
-        'apellido', 
-        'edad', 
-        'celular', 
-        'tipo', 
-        'sector', 
-        'procedencia', 
-        'pais', 
-        'estado', 
-        'referencia', 
-        'carac_principal')->get();
+    public function index(Request $request){
+        $query = User::query();
+
+        //Usuario por nombre o correo
+        if($request->filled('search')){
+            $query->where(function($q) use ($request){
+                $q->where('name', 'ILIKE', '%' . $request->search . '%')
+                ->orwhere('email', 'ILIKE', '%' . $request->search . '%');
+            });
+        }
+
+        //Filtrar usuarios por tipo
+        if($request->filled('tipo')){
+            $query->where('tipo', $request->tipo);
+        }
+
+        //Filtrar usuarios por sector
+        if($request->filled('sector')){
+            $query->where('sector', $request->sector);
+        }
+
+        //Filtrar usuarios por pais
+        if($request->filled('pais')){
+            $query->where('pais', $request->pais);
+        }
+
+        //Filtrar usuarios por referencia
+        if($request->filled('referencia')){
+            $query->where('referencia', $request->referencia);
+        }
+
+        //Fultrar usuarios por interes
+        if($request->filled('carac_principal')){
+            $query->where('carac_principal', $request->carac_principal);
+        }
+
+        $users = $query->paginate(30)->withQueryString();
 
 
         return view('collab.administrador.usuarios', compact('users',));
