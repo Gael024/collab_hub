@@ -24,12 +24,28 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $tipos_usuarios = ['estudiante', 'profesor', 'profesional'];
+        $sector = ['educacion', 'tecnologia', 'negocios', 'salud'];
+        $procedencia = ['BUAP', 'IPN', 'UNAM', 'Oracle', 'Tsystems'];
+        $pais = ['mexico', 'usa', 'espania', 'canada', 'brazil', 'china'];
+        $referencia = ['redes', 'amigos', 'anuncio', 'empresa'];
+        $caracteristica = ['presencia', 'chat', 'editor'];
+
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            // Campos extra
+            'rol' => 'usuario',
+            'edad' => fake()->numberBetween(18, 60),
+            'tipo' => fake()->randomElement($tipos_usuarios),
+            'sector' => fake()->randomElement($sector),
+            'procedencia' => fake()->randomElement($procedencia),
+            'pais' => fake()->randomElement($pais),
+            'referencia' => fake()->randomElement($referencia),
+            'carac_principal' => fake()->randomElement($caracteristica),
         ];
     }
 

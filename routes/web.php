@@ -44,6 +44,7 @@ Route::middleware(['auth', 'redirect.role'])->group(function() {
 Route::middleware(['auth', 'administrador'])->group(function () {
     Route::get('/administrador/usuarios', [AdministradorController::class, 'index']);
     Route::get('/administrador/dashboard', [AdministradorController::class, 'index']);
+    Route::get('/administrador/estadisticas', [AdministradorController::class, 'estadisticas']);
     });
 
 
