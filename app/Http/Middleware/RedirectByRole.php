@@ -18,7 +18,9 @@ class RedirectByRole
     {
         if(Auth::check()){
             if(Auth::user()->rol === 'administrador' && $request->path() === 'dashboard') {
-                return redirect('/administrador/dashboard');
+                //return redirect('/administrador/dashboard');
+                //return redirect(('/administrador/inicio'));
+                return redirect()->route('administrador.inicio');
             }
         }
         return $next($request);

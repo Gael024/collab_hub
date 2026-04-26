@@ -62,7 +62,8 @@
         @include('collab.administrador.parcial.panel')
     </div>
 
-    <a href="/">Volver</a>
+    <a href="{{ route('administrador.inicio') }}"><button>Regresar al inicio</button></a>
+    <a href="{{ route('administrador.estadisticas') }}"><button>Ver estadisticas</button></a>
 
     
 <script>

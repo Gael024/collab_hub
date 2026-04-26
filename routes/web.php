@@ -41,10 +41,22 @@ Route::middleware(['auth', 'redirect.role'])->group(function() {
     });
 });
 */
+/*
 Route::middleware(['auth', 'administrador'])->group(function () {
     Route::get('/administrador/usuarios', [AdministradorController::class, 'index']);
     Route::get('/administrador/dashboard', [AdministradorController::class, 'index']);
     Route::get('/administrador/estadisticas', [AdministradorController::class, 'estadisticas']);
+    });
+*/
+
+
+Route::middleware(['auth', 'administrador'])->group(function () {
+    Route::get('administrador/inicio', function () {
+        return view('collab.administrador.inicio');
+    })->name('administrador.inicio');
+   // Route::get('/administrador/dashboard', [AdministradorController::class, 'index']);
+    Route::get('/administrador/usuarios', [AdministradorController::class, 'index'])->name('administrador.usuarios');
+    Route::get('/administrador/estadisticas', [AdministradorController::class, 'estadisticas'])->name('administrador.estadisticas');
     });
 
 

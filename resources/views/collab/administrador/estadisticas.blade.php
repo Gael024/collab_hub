@@ -36,6 +36,9 @@
     <h4>Forma en que se conocio la aplicación por tipo de usuario</h4>
     <canvas id="grafica_tipo_contra_referencias"></canvas>
 
+    <a href="{{ route('administrador.inicio')}}"><button>Regresar al inicio</button></a>
+    <a href="{{ route('administrador.usuarios')}}"><button>Ir al panel de usuarios</button></a>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     window.graficoData = {
