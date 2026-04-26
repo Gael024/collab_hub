@@ -14,10 +14,12 @@
             <!-- Usuario logueado -->
             @auth
                 <div class="flex items-center gap-6">
-                    <a href="{{ route('grupos.index') }}"
-                    class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 hover:text-white transition font-bold">
-                        Visitar grupos
-                    </a>
+                    @if(Auth::user()->rol !== 'administrador')
+                        <a href="{{ route('grupos.index') }}"
+                        class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition font-bold">
+                            Visitar grupos
+                        </a>
+                    @endif
                     @php
                         $initials =
                             strtoupper(substr(Auth::user()->name, 0, 1)) .
