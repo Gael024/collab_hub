@@ -1,5 +1,5 @@
 //const { data } = require("alpinejs");
-
+import Chart from 'chart.js/auto';
 
 function graficoUsuariosEdad(usuariosPorEdad){
     const labels_edad = usuariosPorEdad.map(item => item.rango_edad);

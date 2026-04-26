@@ -1,271 +1,82 @@
-<!-- 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>VistaIndividual</title>
-</head>
-<body>
-    <h1>GRUPO: {{ $grupo->name}}</h1>
-   
-    @if (@session('error'))
-    <p>{{ session('error') }}</p>
-    @endif
-
-    @if (@session('success'))
-    <p>{{ session('success') }}</p>
-    @endif
-    
-    <h4>Miembros del grupo</h4>
-    <ol>
-        @foreach ($grupo->users as $user)
-            <li>{{ $user->name }}</li>
-        @endforeach
-    </ol>
-
-    <h4>Usuarios activos</h4>
-    <ol id="usuarios_linea"></ol>
-
-    <h4>Agregar participante</h4>
-    <form method="POST" action="{{ route('grupos.addUser', $grupo->id) }}">
-        @csrf
-
-        <input type="email" name="email" placeholder="Correo del usuario">
-        <button type="submit">Agregar</button>
-
-    </form>
-    
-    <h4>Chat del grupo</h4>
-   
-    <div id="chat" style="border:1px solid #ccc; padding:10px; height:200px; overflow-y:scroll;">
-        @foreach ($grupo->mensajes as $mensaje)
-            <p>
-                <strong>{{ $mensaje->user->name }}:</strong>
-                {{ $mensaje->contenido}}
-            </p>
-        @endforeach
-
-    </div>
-    
-    <form method="POST" action="{{ route('grupos.mensajes.store', $grupo->id) }}">
-        @csrf
-        <input type="text" name="contenido" placeholder="Escriba su mensaje">
-        <button type="submit">Enviar</button>
-
-    </form>
-
-    <h4>Editor compartido</h4>
-
-    <textarea id="editor" rows="10" style="width:100%;">
-        {{ $grupo->documento->contenido }}
-    </textarea>
-  
-    
-     @vite(['resources/js/app.js'])
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function(){
-            const lista_usuarios = document.querySelector('#usuarios_linea');
-            //Variables para editor compartido
-            const editor = document.getElementById('editor');
-            let timeout = null;
-            let isUpdating = false;
-
-            window.Echo.join('grupo.{{ $grupo->id }}')
-
-            //Usuarios conectados
-            .here((users) => {
-                renderUsers(users);
-            })
-            //Entrada usuario
-            .joining((user) =>{
-                addUser(user);
-            })
-            //Salida usuario
-            .leaving((user) => {
-                removeUser(user);
-            })
-            
-            //Mensajes
-            .listen('.MensajeEnviado', (e) =>{
-                //console.log('Evento recibido', e);
-                const chat = document.querySelector('#chat');
-                chat.innerHTML += `
-                <p>
-                    <strong>${e.mensaje.user.name}:</strong>
-                    ${e.mensaje.contenido}
-                    </p>
-                    `;
-            })
-
-            //Editor
-            //window.Echo.channel('grupo.{{ $grupo->id }}')
-            .listen('.DocumentoActualizado', (e) => {
-                //console.log('Evento Documento', e);
-                //isUpdating = true;
-                //editor.value = e.documento.contenido;
-                //isUpdating = false;
-                if(editor.value !== e.contenido){
-                    isUpdating = true;
-                    editor.value = e.contenido;
-                    isUpdating = false;
-                }
-            });
-
-            //Lista de presencia
-            function renderUsers(users){
-                lista_usuarios.innerHTML = '';
-                users.forEach(user => addUser(user));
-            }
-            //Metodo para agregar usuario a lista
-            function addUser(user){
-                if(!document.getElementById('user-' + user.id)){
-                    lista_usuarios.innerHTML += `
-                    <li id="user-${user.id}"> En linea ${user.name}</li>
-                    `
-                }
-            }
-            //Metodo para quitar usuario de lista
-            function removeUser(user){
-                const el = document.getElementById('user-' + user.id);
-                if(el) el.remove();
-            }
-
-            //Logica para editor compartido
-            editor.addEventListener('input', function(){
-                if(isUpdating) return;
-
-                clearTimeout(timeout);
-                timeout = setTimeout(() => {
-                    fetch("{{ route('documentos.update', $grupo->id) }}", {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({
-                            contenido: editor.value
-                        })
-                    });
-                    
-                }, 500);
-            });
-        });
-    </script>
-       
-
-</body>
-</html>
-
--->
-
 <x-auth-layout>
-
-<div class="max-w-6xl mx-auto py-8 space-y-6">
-
-    <!-- Header del grupo -->
-    <div class="flex justify-between items-center">
-        <h1 class="text-3xl font-bold text-gray-800">
+    <div class="max-w-6xl mx-auto p-6 space-y-6">
+        <h1 class="text-3xl font-bold text-indigo-700 text-center">
             GRUPO: {{ $grupo->name }}
         </h1>
-    </div>
-
-    <!-- Mensajes -->
-    @if (session('error'))
-        <p class="text-red-500 font-semibold">{{ session('error') }}</p>
-    @endif
-
-    @if (session('success'))
-        <p class="text-green-600 font-semibold">{{ session('success') }}</p>
-    @endif
-
-    <!-- Layout principal -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-        <!-- Columna izquierda: miembros -->
-        <div class="bg-white shadow-md rounded-lg p-4 space-y-3">
-
-            <h4 class="font-bold text-gray-700">Miembros</h4>
-
-            <ol class="space-y-1 text-gray-600">
-                @foreach ($grupo->users as $user)
-                    <li>• {{ $user->name }}</li>
-                @endforeach
-            </ol>
-
-            <h4 class="font-bold text-gray-700 pt-4">Usuarios en línea</h4>
-            <ol id="usuarios_linea" class="text-sm text-green-600"></ol>
-
-            <!-- Agregar usuario -->
-            <form method="POST"
-                  action="{{ route('grupos.addUser', $grupo->id) }}"
-                  class="space-y-2 pt-4">
-
-                @csrf
-
-                <input type="email"
-                       name="email"
-                       placeholder="Correo del usuario"
-                       class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500">
-
-                <button type="submit"
-                        class="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition">
-                    Agregar
-                </button>
-
-            </form>
+        @if (session('error'))
+            <div class="bg-red-100 text-red-700 p-3 rounded">
+                {{ session('error') }}
+            </div>
+        @endif
+        @if (session('success'))
+            <div class="bg-green-100 text-green-700 p-3 rounded">
+                {{ session('success') }}
+            </div>
+        @endif
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- MIEMBROS -->
+            <div class="bg-white shadow rounded-lg p-4">
+                <h4 class="text-lg font-semibold text-gray-700 mb-3">Miembros del grupo</h4>
+                <ol class="list-decimal pl-5 space-y-1 text-gray-600">
+                    @foreach ($grupo->users as $user)
+                        <li>{{ $user->name }}</li>
+                    @endforeach
+                </ol>
+            </div>
+            <!-- USUARIOS EN LÍNEA -->
+            <div class="bg-white shadow rounded-lg p-4">
+                <h4 class="text-lg font-semibold text-gray-700 mb-3">Usuarios activos</h4>
+                <ol id="usuarios_linea" class="space-y-1 text-green-600 font-medium"></ol>
+            </div>
 
         </div>
-
-        <!-- Centro: chat -->
-        <div class="bg-white shadow-md rounded-lg p-4 flex flex-col">
-
-            <h4 class="font-bold text-gray-700 mb-3">Chat del grupo</h4>
+        <!-- AGREGAR USUARIO -->
+        <div class="bg-white shadow rounded-lg p-4">
+            <h4 class="text-lg font-semibold text-gray-700 mb-3">Agregar participante</h4>
+            <form method="POST" action="{{ route('grupos.addUser', $grupo->id) }}"
+                class="flex flex-col md:flex-row gap-3">
+                @csrf
+                <input type="email" name="email"
+                    class="flex-1 border rounded p-2"
+                    placeholder="Correo del usuario">
+                <button type="submit"
+                        class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
+                    Agregar
+                </button>
+            </form>
+        </div>
+        <!-- CHAT -->
+        <div class="bg-white shadow rounded-lg p-4">
+            <h4 class="text-lg font-semibold text-gray-700 mb-3">Chat del grupo</h4>
 
             <div id="chat"
-                 class="flex-1 border rounded-md p-3 h-64 overflow-y-auto space-y-2 bg-gray-50">
-
+                class="border rounded p-3 h-64 overflow-y-auto bg-gray-50 space-y-2">
                 @foreach ($grupo->mensajes as $mensaje)
-                    <p>
-                        <strong>{{ $mensaje->user->name }}:</strong>
+                    <p class="text-sm">
+                        <strong class="text-indigo-600">{{ $mensaje->user->name }}:</strong>
                         {{ $mensaje->contenido }}
                     </p>
                 @endforeach
-
             </div>
-
             <form method="POST"
-                  action="{{ route('grupos.mensajes.store', $grupo->id) }}"
-                  class="mt-3 flex gap-2">
-
+                action="{{ route('grupos.mensajes.store', $grupo->id) }}"
+                class="mt-3 flex gap-2">
                 @csrf
+                <input type="text" name="contenido"
+                    class="flex-1 border rounded p-2"
+                    placeholder="Escriba su mensaje">
 
-                <input type="text"
-                       name="contenido"
-                       placeholder="Escribe un mensaje..."
-                       class="flex-1 px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500">
-
-                <button class="bg-indigo-600 text-white px-4 rounded-md hover:bg-indigo-700 transition">
+                <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
                     Enviar
                 </button>
-
             </form>
-
         </div>
-
-        <!-- Derecha: editor -->
-        <div class="bg-white shadow-md rounded-lg p-4">
-
-            <h4 class="font-bold text-gray-700 mb-3">Editor compartido</h4>
-
-            <textarea id="editor"
-                      rows="15"
-                      class="w-full border rounded-md p-2 focus:ring-indigo-500 focus:border-indigo-500">
+        <!-- EDITOR -->
+        <div class="bg-white shadow rounded-lg p-4">
+            <h4 class="text-lg font-semibold text-gray-700 mb-3">Editor compartido</h4>
+            <textarea id="editor" class="w-full border rounded p-3 h-64 resize-none">
                 {{ $grupo->documento->contenido }}
             </textarea>
-
         </div>
 
     </div>
