@@ -55,7 +55,7 @@
         <div class="w-full">
             <a href="{{ route('administrador.inicio')}}"
             class="block w-full text-center bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition font-bold">
-                Volver
+                Regresar al inicio
             </a>
         </div>
 

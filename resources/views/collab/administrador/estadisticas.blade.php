@@ -1,59 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Estadisticas</title>
-</head>
-<body>
-    <h1>Estadisticas</h1>
-
-    <h4>Proporción de usuarios por edad</h4>
-    <canvas id="grafica_usuarios_edad"></canvas>
-
-    <h4>Proporción de usuarios dado el tipo</h4>
-    <canvas id="grafica_usuarios_tipo"></canvas>
-
-    <h4>Proporción de usuarios dado el sector</h4>
-    <canvas id="grafica_usuarios_sector"></canvas>
-
-    <h4>Proporción de usuarios dada la institución de procedencia</h4>
-    <canvas id="grafica_usuarios_procedencia"></canvas>
-
-    <h4>Proporción de usuarios dado el país</h4>
-    <canvas id="grafica_usuarios_pais"></canvas>
-
-    <h4>Proporción de los medios que atraen más usuarios</h4>
-    <canvas id="grafica_usuarios_referencia"></canvas>
-
-    <h4>Caracteristica más importante para los usuarios</h4>
-    <canvas id="grafica_usuarios_caracteristicas"></canvas>
-
-    <h4>Caracteristica de mayor interes por tipo de usuario</h4>
-    <canvas id="grafica_tipo_contra_caracteristica"></canvas>
-
-    <h4>Forma en que se conocio la aplicación por tipo de usuario</h4>
-    <canvas id="grafica_tipo_contra_referencias"></canvas>
-
-    <a href="{{ route('administrador.inicio')}}"><button>Regresar al inicio</button></a>
-    <a href="{{ route('administrador.usuarios')}}"><button>Ir al panel de usuarios</button></a>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    window.graficoData = {
-        usuariosPorEdad: {!! json_encode($usuariosPorEdad) !!},
-        usuariosPorTipo: {!! json_encode($usuariosPorTipo) !!},
-        usuariosPorSector: {!! json_encode($usuariosPorSector) !!},
-        usuariosPorProcedencia: {!! json_encode($usuariosPorProcedencia) !!},
-        usuariosPorPais: {!! json_encode($usuariosPorPais) !!},
-        usuariosPorReferencia: {!! json_encode($usuariosPorReferencia) !!},
-        usuariosPorCaracteristica : {!! json_encode($usuariosPorCaracteristica) !!},
-        radarCaracteristicas: {!! json_encode($radarCaracteristicas) !!},
-        radarReferencias: {!! json_encode($radarReferencias) !!}
-    };
-</script>
- @vite(['resources/js/grafica.js'])
-
-</body>
-</html>
+<x-auth-layout>
+    <div class="w-full max-w-6xl mx-auto space-y-8">
+        <h1 class="text-3xl font-bold text-indigo-700 text-center">Estadísticas del sistema</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h4 class="font-semibold mb-2">Usuarios por edad</h4>
+                <canvas id="grafica_usuarios_edad"></canvas>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h4 class="font-semibold mb-2">Usuarios por tipo</h4>
+                <canvas id="grafica_usuarios_tipo"></canvas>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h4 class="font-semibold mb-2">Usuarios por sector</h4>
+                <canvas id="grafica_usuarios_sector"></canvas>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h4 class="font-semibold mb-2">Institución de procedencia</h4>
+                <canvas id="grafica_usuarios_procedencia"></canvas>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h4 class="font-semibold mb-2">Usuarios por país</h4>
+                <canvas id="grafica_usuarios_pais"></canvas>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h4 class="font-semibold mb-2">Medios de referencia</h4>
+                <canvas id="grafica_usuarios_referencia"></canvas>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h4 class="font-semibold mb-2">Características importantes</h4>
+                <canvas id="grafica_usuarios_caracteristicas"></canvas>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h4 class="font-semibold mb-2">Tipo vs característica</h4>
+                <canvas id="grafica_tipo_contra_caracteristica"></canvas>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow md:col-span-2">
+                <h4 class="font-semibold mb-2">Tipo vs referencia</h4>
+                <canvas id="grafica_tipo_contra_referencias"></canvas>
+            </div>
+        </div>
+        <div class="w-full max-w-6xl mx-auto grid grid-cols-2 gap-4 pt-4">  
+            <a href="{{ route('administrador.inicio') }}" class="w-full text-center bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition font-bold">
+                Regresar al inicio
+            </a>
+            <a href="{{ route('administrador.usuarios') }}" class="w-full text-center bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition font-bold">
+                Ir al panel de usuarios
+            </a>
+        </div>
+    </div>
+    <script>
+        window.graficoData = {
+            usuariosPorEdad: {!! json_encode($usuariosPorEdad) !!},
+            usuariosPorTipo: {!! json_encode($usuariosPorTipo) !!},
+            usuariosPorSector: {!! json_encode($usuariosPorSector) !!},
+            usuariosPorProcedencia: {!! json_encode($usuariosPorProcedencia) !!},
+            usuariosPorPais: {!! json_encode($usuariosPorPais) !!},
+            usuariosPorReferencia: {!! json_encode($usuariosPorReferencia) !!},
+            usuariosPorCaracteristica: {!! json_encode($usuariosPorCaracteristica) !!},
+            radarCaracteristicas: {!! json_encode($radarCaracteristicas) !!},
+            radarReferencias: {!! json_encode($radarReferencias) !!}
+        };
+    </script>
+    @vite(['resources/js/grafica.js'])
+</x-auth-layout>
