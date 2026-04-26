@@ -1,3 +1,4 @@
+<!-- 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +9,7 @@
 </head>
 <body>
     <h1>GRUPO: {{ $grupo->name}}</h1>
-    <!--Mensajes de validación para registro de usuarios-->
+   
     @if (@session('error'))
     <p>{{ session('error') }}</p>
     @endif
@@ -37,7 +38,7 @@
     </form>
     
     <h4>Chat del grupo</h4>
-    <!--Espacio para ver los mensajes-->
+   
     <div id="chat" style="border:1px solid #ccc; padding:10px; height:200px; overflow-y:scroll;">
         @foreach ($grupo->mensajes as $mensaje)
             <p>
@@ -47,7 +48,7 @@
         @endforeach
 
     </div>
-    <!--Formulario para envio de mensajes-->
+    
     <form method="POST" action="{{ route('grupos.mensajes.store', $grupo->id) }}">
         @csrf
         <input type="text" name="contenido" placeholder="Escriba su mensaje">
@@ -55,7 +56,6 @@
 
     </form>
 
-    <!--Editor compartido-->
     <h4>Editor compartido</h4>
 
     <textarea id="editor" rows="10" style="width:100%;">
@@ -63,9 +63,8 @@
     </textarea>
   
     
-    <!--Carga de Bootstrap.js-->
      @vite(['resources/js/app.js'])
-    <!---->
+    
     <script>
         document.addEventListener('DOMContentLoaded', function(){
             const lista_usuarios = document.querySelector('#usuarios_linea');
@@ -159,3 +158,118 @@
 
 </body>
 </html>
+
+-->
+
+<x-auth-layout>
+
+<div class="max-w-6xl mx-auto py-8 space-y-6">
+
+    <!-- Header del grupo -->
+    <div class="flex justify-between items-center">
+        <h1 class="text-3xl font-bold text-gray-800">
+            GRUPO: {{ $grupo->name }}
+        </h1>
+    </div>
+
+    <!-- Mensajes -->
+    @if (session('error'))
+        <p class="text-red-500 font-semibold">{{ session('error') }}</p>
+    @endif
+
+    @if (session('success'))
+        <p class="text-green-600 font-semibold">{{ session('success') }}</p>
+    @endif
+
+    <!-- Layout principal -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- Columna izquierda: miembros -->
+        <div class="bg-white shadow-md rounded-lg p-4 space-y-3">
+
+            <h4 class="font-bold text-gray-700">Miembros</h4>
+
+            <ol class="space-y-1 text-gray-600">
+                @foreach ($grupo->users as $user)
+                    <li>• {{ $user->name }}</li>
+                @endforeach
+            </ol>
+
+            <h4 class="font-bold text-gray-700 pt-4">Usuarios en línea</h4>
+            <ol id="usuarios_linea" class="text-sm text-green-600"></ol>
+
+            <!-- Agregar usuario -->
+            <form method="POST"
+                  action="{{ route('grupos.addUser', $grupo->id) }}"
+                  class="space-y-2 pt-4">
+
+                @csrf
+
+                <input type="email"
+                       name="email"
+                       placeholder="Correo del usuario"
+                       class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+
+                <button type="submit"
+                        class="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition">
+                    Agregar
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- Centro: chat -->
+        <div class="bg-white shadow-md rounded-lg p-4 flex flex-col">
+
+            <h4 class="font-bold text-gray-700 mb-3">Chat del grupo</h4>
+
+            <div id="chat"
+                 class="flex-1 border rounded-md p-3 h-64 overflow-y-auto space-y-2 bg-gray-50">
+
+                @foreach ($grupo->mensajes as $mensaje)
+                    <p>
+                        <strong>{{ $mensaje->user->name }}:</strong>
+                        {{ $mensaje->contenido }}
+                    </p>
+                @endforeach
+
+            </div>
+
+            <form method="POST"
+                  action="{{ route('grupos.mensajes.store', $grupo->id) }}"
+                  class="mt-3 flex gap-2">
+
+                @csrf
+
+                <input type="text"
+                       name="contenido"
+                       placeholder="Escribe un mensaje..."
+                       class="flex-1 px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+
+                <button class="bg-indigo-600 text-white px-4 rounded-md hover:bg-indigo-700 transition">
+                    Enviar
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- Derecha: editor -->
+        <div class="bg-white shadow-md rounded-lg p-4">
+
+            <h4 class="font-bold text-gray-700 mb-3">Editor compartido</h4>
+
+            <textarea id="editor"
+                      rows="15"
+                      class="w-full border rounded-md p-2 focus:ring-indigo-500 focus:border-indigo-500">
+                {{ $grupo->documento->contenido }}
+            </textarea>
+
+        </div>
+
+    </div>
+
+</div>
+
+</x-auth-layout>
