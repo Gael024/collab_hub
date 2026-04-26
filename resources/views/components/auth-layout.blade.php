@@ -11,31 +11,47 @@
             <a href="{{ route('home') }}">
                 <img src="{{ asset('images/logo.png') }}" class="h-14 w-auto object-contain">
             </a>
-            <!-- Navegación -->
-            <div class="flex items-center gap-4">
-                @guest
-                    <a href="{{ route('login') }}" 
-                    class="px-4 py-2 rounded-md transition duration-200 hover:bg-indigo-700 hover:text-white hover:font-semibold">
+            <!-- Usuario logueado -->
+            @auth
+                <div class="flex items-center gap-6">
+                    <a href="{{ route('grupos.index') }}"
+                    class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 hover:text-white transition font-bold">
+                        Visitar grupos
+                    </a>
+                    @php
+                        $initials =
+                            strtoupper(substr(Auth::user()->name, 0, 1)) .
+                            strtoupper(substr(Auth::user()->apellido, 0, 1));
+                    @endphp
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-white text-indigo-600 flex items-center justify-center font-bold">
+                            {{ $initials }}
+                        </div>
+                        <span class="font-semibold">
+                            {{ Auth::user()->name }}
+                        </span>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button class="bg-white text-indigo-600 px-4 py-2 rounded-md hover:bg-indigo-700 hover:text-white transition">
+                                Cerrar sesión
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            @endauth
+            <!-- Usuario invitado -->
+            @guest
+                <div class="flex items-center gap-4">
+                    <a href="{{ route('login') }}"
+                    class="px-4 py-2 rounded-md hover:bg-indigo-700 hover:text-white transition">
                         Iniciar sesión
                     </a>
-
-                    <a href="{{ route('register') }}" 
-                    class="bg-white text-indigo-600 px-4 py-2 rounded-md transition duration-200 hover:bg-indigo-700 hover:text-white hover:font-semibold">
+                    <a href="{{ route('register') }}"
+                    class="bg-white text-indigo-600 px-4 py-2 rounded-md hover:bg-indigo-700 hover:text-white transition">
                         Registrarse
                     </a>
-                @endguest
-
-                @auth
-                    <span>{{ Auth::user()->name }}</span>
-
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button class="bg-white text-indigo-600 px-4 py-2 rounded-md hover:bg-indigo-700 hover:text-white">
-                            Cerrar sesión
-                        </button>
-                    </form>
-                @endauth
-            </div>
+                </div>
+            @endguest
         </header>
         <main class="flex-1 flex justify-center items-center p-6">
             {{ $slot }}

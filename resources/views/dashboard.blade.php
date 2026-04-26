@@ -1,27 +1,29 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+<x-auth-layout>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
-                </div>
-            </div>
+    <div class="max-w-4xl mx-auto py-0 flex flex-col items-center space-y-6">
+
+        <!-- Imagen -->
+        <img src="{{ asset('images/img3.png') }}" 
+            alt="Grupos"
+            class="w-40 h-40 object-contain">
+
+        <!-- Mensaje -->
+        <div class="text-center space-y-2">
+            <h1 class="text-3xl font-bold text-gray-800">
+                Bienvenido de nuevo, {{ Auth::user()->name }}
+            </h1>
+
+            <p class="text-gray-500">
+                Accede a tus grupos colaborativos y continúa trabajando.
+            </p>
         </div>
+
+        <!-- Botón -->
+        <a href="{{ route('grupos.index') }}"
+           class="bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-700 transition">
+            Visitar grupos
+        </a>
+
     </div>
-    <a href="{{ route('grupos.index') }}"> Ver grupos</a>
-    <form method="POST" action="{{ route('logout') }}">
-    @csrf
-    <button 
-        type="submit"
-        class="bg-white text-indigo-600 px-4 py-2 rounded-md hover:bg-indigo-700 hover:text-white transition"
-    >
-        Cerrar sesión
-    </button>
-</form>
-</x-app-layout>
+
+</x-auth-layout>
