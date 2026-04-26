@@ -15,4 +15,13 @@
         </div>
     </div>
     <a href="{{ route('grupos.index') }}"> Ver grupos</a>
+    <form method="POST" action="{{ route('logout') }}">
+    @csrf
+    <button 
+        type="submit"
+        class="bg-white text-indigo-600 px-4 py-2 rounded-md hover:bg-indigo-700 hover:text-white transition"
+    >
+        Cerrar sesión
+    </button>
+</form>
 </x-app-layout>

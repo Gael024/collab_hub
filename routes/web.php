@@ -47,6 +47,9 @@ Route::middleware(['auth', 'administrador'])->group(function () {
     Route::get('/administrador/estadisticas', [AdministradorController::class, 'estadisticas']);
     });
 
+Route::get('/', function () {
+    return view('welcome');
+})->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
