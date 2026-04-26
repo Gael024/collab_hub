@@ -48,6 +48,7 @@
             </a>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         window.graficoData = {
             usuariosPorEdad: {!! json_encode($usuariosPorEdad) !!},
