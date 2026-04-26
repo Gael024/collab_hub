@@ -12,9 +12,8 @@ Route::get('/', function () {
 //Rutas para 'grupos'
 Route::middleware(['auth'])->group(function () {
     Route::get('/grupos', [GrupoController::class, 'index'])->name('grupos.index');
-    Route::get('/grupos/create', [GrupoController::class, 'create']);
-    Route::post('/grupos', [GrupoController::class, 'store']);
-   
+    Route::get('/grupos/create', [GrupoController::class, 'create'])->name('grupos.create');
+    Route::post('/grupos', [GrupoController::class, 'store'])->name('grupos.store');
 });
 
 //Ruta para vista de grupo individual
