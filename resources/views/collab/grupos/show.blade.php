@@ -29,12 +29,22 @@
 
             <ol class="space-y-1 text-gray-600">
                 @foreach ($grupo->users as $user)
-                    <li>• {{ $user->name }}</li>
-                    <form method="POST" action="{{ route('grupos.removeUser', [$grupo->id, $user->id]) }}">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit">Eliminar</button>
-                    </form>
+                    <li class="flex items-center justify-between">
+                        <span>• {{ $user->name }} 
+                            @if ($user->id === $grupo->id_propietario)
+                                <span class="text-xs font-bold text-indigo-600">(Creador)</span>
+                            @endif
+                        </span>
+                       @if (auth()->id() === $grupo->id_propietario && $user->id !== $grupo->id_propietario)
+                            <form method="POST" action="{{ route('grupos.removeUser', [$grupo->id, $user->id]) }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="ml-2 px-2 py-1 text-xs bg-red-500 text-white rounded hover:bg-red-600 transition">
+                                    Eliminar
+                                </button>
+                            </form>
+                        @endif
+                    </li>
                 @endforeach
             </ol>
 
