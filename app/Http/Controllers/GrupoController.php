@@ -10,10 +10,12 @@ use App\Models\Documento;
 use Illuminate\Support\Facades\Auth;
 use App\Events\MensajeEnviado;
 use App\Events\DocumentoActualizado;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 
 class GrupoController extends Controller
-{   //Lista de grupos 
+{    use AuthorizesRequests; //Permite usar el método authorize()
+       //Lista de grupos 
     public function index(){
         $grupos  = Auth::user()->grupos;
         return view('collab.grupos.index', compact('grupos'));
@@ -55,6 +57,9 @@ class GrupoController extends Controller
     //Agregar usuarios a grupos de trabajo
     public function addUser(Request $request, $id){
         $grupo = Grupo::findOrFail($id);
+        //Uso de p0olitica para limitar el uso de la función addUser
+        $this->authorize('addUser', $grupo); //
+
         $user = User::where('email', $request->email)->first();
 
         if(!$user){
@@ -68,6 +73,19 @@ class GrupoController extends Controller
         $grupo->users()->attach($user->id);
 
         return back()->with('success', 'Usuario agregado correctamente');
+    }
+
+    public function removeUser($grupoId, $userId){
+        $grupo = Grupo::findOrFail($grupoId);
+
+        $this->authorize('removeUser', $grupo);
+
+        if($userId == $grupo->id_propietario) {
+            return back()->with('error', 'El propietario del grupo no puede ser eliminado');
+        }
+
+        $grupo->users()->detach($userId);
+        return back()->with('success', 'Usuario eliminado');
     }
 
     public function storeMensaje(Request $request, $id){

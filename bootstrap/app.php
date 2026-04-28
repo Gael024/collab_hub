@@ -1,11 +1,13 @@
 <?php
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Mailer\Exception\HttpTransportException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -22,5 +24,13 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->render(function (AuthorizationException $e, Request $request) {
+            return redirect()->back()->with('error', 'No estás autorizado para realizar esta acción');
+        });
+
+        $exceptions->render(function (HttpException $e, Request $request) {
+            if($e->getStatusCode() === 403){
+                return redirect()->back()->with('error', 'No estas autorizado para realizar esta acción');
+            }
+        });
     })->create();

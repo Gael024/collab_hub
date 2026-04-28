@@ -30,6 +30,11 @@
             <ol class="space-y-1 text-gray-600">
                 @foreach ($grupo->users as $user)
                     <li>• {{ $user->name }}</li>
+                    <form method="POST" action="{{ route('grupos.removeUser', [$grupo->id, $user->id]) }}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit">Eliminar</button>
+                    </form>
                 @endforeach
             </ol>
 

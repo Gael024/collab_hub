@@ -28,6 +28,9 @@ Route::post('/grupos/{id}/mensajes', [GrupoController::class, 'storeMensaje'])->
 //Ruta para editor compartido
 Route::post('/grupos/{id}/documento', [GrupoController::class, 'updateDocumento'])->name('documentos.update');
 
+//Ruta para eliminar usuarios de grupos
+Route::delete('/grupos/{grupo}/usuarios/{user}', [GrupoController::class, 'removeUser'])->name('grupos.removeUser')->middleware('auth');
+
 //Ruta para administrador
 /*
 Route::middleware(['auth', 'administrador'])->group(function () {
