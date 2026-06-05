@@ -21,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'administrador' => \App\Http\Middleware\AdministradorMiddleware::class,
             'redirect.role' => \App\Http\Middleware\RedirectByRole::class,
+            'survey' => \App\Http\Middleware\CheckUserSurvey::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

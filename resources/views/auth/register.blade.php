@@ -18,11 +18,13 @@
                     <x-input-error :messages="$errors->get('apellido')" class="mt-2 text-red-600 font-semibold" />
                 </div>
                 <!-- Edad -->
+                <!--
                 <div>
                     <x-input-label for="edad" value="Edad" />
                     <x-text-input id="edad" class="block mt-1 w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500" type="number" name="edad" :value="old('edad')" required autocomplete="edad" />
                     <x-input-error :messages="$errors->get('edad')" class="mt-2 text-red-600 font-semibold"/>
                 </div>
+                -->
                 <!-- Telefono -->
                 <div>
                     <x-input-label for="celular" value="Número telefonico" />
@@ -30,6 +32,7 @@
                     <x-input-error :messages="$errors->get('celular')"  class="mt-2 text-red-600 font-semibold" />
                 </div>
                 <!-- Pais-->
+                <!--
                 <div>
                     <x-input-label for="pais" value="País" />
                     <select id="pais" name="pais" class="block mt-1 w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
@@ -43,13 +46,17 @@
                     </select>
                     <x-input-error :messages="$errors->get('pais')" class="mt-2 text-red-600 font-semibold" />
                 </div>
+            -->
                 <!-- Estado -->
+                <!--
                 <div>
                     <x-input-label for="estado" value="Estado en el que reside" />
                     <x-text-input id="estado" class="block mt-1 w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500" type="text" name="estado" :value="old('estado')" required autocomplete="estado" />
                     <x-input-error :messages="$errors->get('estado')" class="mt-2 text-red-600 font-semibold" />
                 </div>
+            -->
                 <!-- Rol -->
+                <!--
                 <div>
                     <x-input-label for="tipo" value="Rol" />
                     <select id="tipo" name="tipo" class="block mt-1 w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
@@ -60,7 +67,9 @@
                     </select>
                     <x-input-error :messages="$errors->get('tipo')" class="mt-2 text-red-600 font-semibold" />
                 </div>
+            -->
                 <!-- Sector-->
+                <!--
                 <div >
                     <x-input-label for="sector" value="Sector" />
                     <select id="sector" name="sector" class="block mt-1 w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
@@ -72,13 +81,17 @@
                     </select>
                     <x-input-error :messages="$errors->get('sector')"  class="mt-2 text-red-600 font-semibold" />
                 </div>
+            -->
                 <!-- Procedencia-->
+                <!--
                 <div class="md:col-span-2">
                     <x-input-label for="procedencia" value="Indique la institución o empresa a la que pertenece" />
                     <x-text-input id="procedencia" class="block mt-1 w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500" type="text" name="procedencia" :value="old('procedencia')" required autocomplete="procedencia" />
                     <x-input-error :messages="$errors->get('procedencia')" class="mt-2 text-red-600 font-semibold" />
                 </div>
+            -->
                 <!-- Referencia-->
+                <!--
                 <div>
                     <x-input-label for="referencia" value="¿Cómo nos conociste?" />
                     <select id="referencia" name="referencia" class="block mt-1 w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
@@ -90,7 +103,9 @@
                     </select>
                     <x-input-error :messages="$errors->get('referencia')" class="mt-2 text-red-600 font-semibold" />
                 </div>
+            -->
                 <!-- Interes-->
+                <!--
                 <div >
                     <x-input-label for="carac_principal" value="¿Qúe carcateristica te interesa más?" />
                     <select id="carac_principal" name="carac_principal" class="block mt-1 w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
@@ -101,6 +116,7 @@
                     </select>
                     <x-input-error :messages="$errors->get('carac_principal')" class="mt-2 text-red-600 font-semibold" />
                 </div>
+            -->
                 <!-- Email Address -->
                 <div>
                     <x-input-label for="email" :value="__('Email')" />

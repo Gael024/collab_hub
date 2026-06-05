@@ -36,15 +36,15 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             /*Validaciones para campos adicionales en el registro*/
             'apellido' =>['required', 'string', 'max:255'],
-            'edad' => ['required', 'integer', 'min:14', 'max:80'],
+            //'edad' => ['required', 'integer', 'min:14', 'max:80'],
             'celular' => ['required', 'string', 'size:10', 'regex:/[0-9]+$/'],
-            'tipo' => ['required', 'in:estudiante,profesor,profesional'],
-            'sector' => ['required', 'in:educacion,tecnologia,negocios,salud'],
-            'procedencia' => ['required', 'string', 'max:255'],
-            'pais' => ['required', 'in:mexico,usa,espania,canada,brazil,china'],
-            'estado' => ['required', 'string', 'max:255'],
-            'referencia' => ['required', 'in:redes,amigos,anuncio,empresa'],
-            'carac_principal' => ['required', 'in:presencia,chat,editor'],
+            //'tipo' => ['required', 'in:estudiante,profesor,profesional'],
+            //'sector' => ['required', 'in:educacion,tecnologia,negocios,salud'],
+            //'procedencia' => ['required', 'string', 'max:255'],
+            //'pais' => ['required', 'in:mexico,usa,espania,canada,brazil,china'],
+            //'estado' => ['required', 'string', 'max:255'],
+            //'referencia' => ['required', 'in:redes,amigos,anuncio,empresa'],
+            //'carac_principal' => ['required', 'in:presencia,chat,editor'],
         ]);
 
         $user = User::create([
@@ -52,21 +52,22 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'apellido' => $request->apellido,
-            'edad' => $request->edad,
+            //'edad' => $request->edad,
             'celular' => $request->celular,
-            'tipo' => $request->tipo,
-            'sector' => $request->sector,
-            'procedencia' => $request->procedencia,
-            'pais' => $request->pais,
-            'estado' => $request->estado,
-            'referencia' => $request->referencia,
-            'carac_principal' => $request->carac_principal,
+            //'tipo' => $request->tipo,
+            //'sector' => $request->sector,
+            //'procedencia' => $request->procedencia,
+            //'pais' => $request->pais,
+            //'estado' => $request->estado,
+            //'referencia' => $request->referencia,
+           // 'carac_principal' => $request->carac_principal,
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        //return redirect(route('dashboard', absolute: false));
+        return redirect()->route('encuesta');
     }
 }

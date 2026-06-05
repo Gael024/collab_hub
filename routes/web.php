@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\AdministradorController;
+use App\Http\Controllers\EncuestaController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -60,6 +61,19 @@ Route::middleware(['auth', 'administrador'])->group(function () {
     Route::get('/administrador/usuarios', [AdministradorController::class, 'index'])->name('administrador.usuarios');
     Route::get('/administrador/estadisticas', [AdministradorController::class, 'estadisticas'])->name('administrador.estadisticas');
     });
+
+//Encuesta en primer logueo   
+Route::middleware(['auth'])->group(function () {
+    Route::get('/encuesta', [EncuestaController::class, 'index'])->name('encuesta');
+    Route::post('/encuesta', [EncuestaController::class, 'store'])->name('encuesta.store');
+});
+
+Route::middleware(['auth', 'survey'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});
+    
 
 Route::get('/', function () {
     return view('welcome');

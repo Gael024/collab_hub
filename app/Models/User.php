@@ -26,7 +26,9 @@ use App\Models\Grupo;
     'estado', 
     'referencia', 
     'carac_principal',
-    'rol'])]  
+    'rol',
+    'grado_academico',
+    'codigo_postal'])]  
 
     
 #[Hidden(['password', 'remember_token'])]
